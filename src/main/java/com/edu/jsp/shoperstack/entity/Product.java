@@ -1,5 +1,6 @@
 package com.edu.jsp.shoperstack.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ public class Product {
 	private int productId;
 	private String productName;
 	private String productFeatures;
+	@Column(nullable = false)
 	private double productPrice;
 	@ManyToOne
 	@JoinColumn
