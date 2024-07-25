@@ -15,4 +15,6 @@ public interface ProductDao {
 	void deleteProduct(int productId);
 
 	boolean isPresent(int productId);
+
+	void updateProductPrice(int productId, double productPrice);
 }

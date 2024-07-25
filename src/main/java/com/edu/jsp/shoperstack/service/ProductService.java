@@ -76,4 +76,19 @@ public class ProductService {
 		}
 		throw new ProductNotFoundException("Product Not FOund");
 	}
+
+	public ResponseEntity<ResponseStructure<String>> updateProductprice
+	(int productId, double productPrice) {
+		if (productDao.isPresent(productId)) {
+			productDao.updateProductPrice(productId,productPrice);
+			
+			ResponseStructure<String> structure = new 
+					ResponseStructure<String>();
+			structure.setMessage("Product Updated");
+
+			return new ResponseEntity<ResponseStructure<String>>
+			(structure, HttpStatus.OK);
+		}
+		throw new ProductNotFoundException("Product Not FOund");
+	}
 }

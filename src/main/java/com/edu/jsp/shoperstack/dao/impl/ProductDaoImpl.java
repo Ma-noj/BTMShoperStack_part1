@@ -42,4 +42,9 @@ public class ProductDaoImpl implements ProductDao {
 		return repository.existsById(productId);
 	}
 
+	@Override
+	public void updateProductPrice(int productId, double productPrice) {
+		repository.updateProductPrice(productId, productPrice);
+	}
+
 }
