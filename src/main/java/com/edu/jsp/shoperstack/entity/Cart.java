@@ -1,11 +1,12 @@
 package com.edu.jsp.shoperstack.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,8 @@ public class Cart {
 	private int numberOfPrducts;
 	private double totalPrice;
 	@CreationTimestamp
-	private LocalDate creationDate;
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDateTime creationDateTime;
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
 	private List<Product> products;
 
