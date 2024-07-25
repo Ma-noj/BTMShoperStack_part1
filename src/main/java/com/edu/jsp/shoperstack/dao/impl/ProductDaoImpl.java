@@ -37,4 +37,9 @@ public class ProductDaoImpl implements ProductDao {
 		repository.deleteById(productId);
 	}
 
+	@Override
+	public boolean isPresent(int productId) {
+		return repository.existsById(productId);
+	}
+
 }
