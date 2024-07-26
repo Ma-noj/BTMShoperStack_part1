@@ -1,5 +1,7 @@
 package com.edu.jsp.shoperstack.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class Product {
 	private double productPrice;
 	@ManyToOne
 	@JoinColumn
+	@JsonIgnore
 	private Cart cart;
 
 }
