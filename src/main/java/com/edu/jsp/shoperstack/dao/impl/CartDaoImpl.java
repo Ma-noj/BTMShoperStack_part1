@@ -35,4 +35,9 @@ public class CartDaoImpl implements CartDao {
 		cartRepositoty.deleteById(cartId);
 	}
 
+	@Override
+	public boolean isPresent(int cartId) {
+		return cartRepositoty.existsById(cartId);
+	}
+
 }

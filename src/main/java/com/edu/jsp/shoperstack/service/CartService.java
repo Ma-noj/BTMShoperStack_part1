@@ -13,6 +13,7 @@ import com.edu.jsp.shoperstack.dao.CartDao;
 import com.edu.jsp.shoperstack.dao.ProductDao;
 import com.edu.jsp.shoperstack.entity.Cart;
 import com.edu.jsp.shoperstack.entity.Product;
+import com.edu.jsp.shoperstack.exception.CartNotFoundException;
 import com.edu.jsp.shoperstack.util.ResponseStructure;
 
 @Service
@@ -68,15 +69,31 @@ public class CartService {
 		return cart;
 	}
 
-//	public ResponseEntity<ResponseStructure<List<Cart>>> findAll() {
-//
-//	}
-//
-//	public ResponseEntity<ResponseStructure<Cart>> findById(int cartId) {
-//
-//	}
-//
-//	public ResponseEntity<ResponseStructure<String>> delete(int cartId) {
-//
-//	}
+	public ResponseEntity<ResponseStructure<List<Cart>>> findAll() {
+		ResponseStructure<List<Cart>> structure = new ResponseStructure<>();
+		structure.setMessage("Found");
+		structure.setData(cartDao.findAll());
+		return new ResponseEntity<ResponseStructure<List<Cart>>>(structure, HttpStatus.OK);
+	}
+
+	public ResponseEntity<ResponseStructure<Cart>> findById(int cartId) {
+		Optional<Cart> optional = cartDao.findById(cartId);
+		if (optional.isPresent()) {
+			ResponseStructure<Cart> structure = new ResponseStructure<>();
+			structure.setMessage("Found");
+			structure.setData(optional.get());
+			return new ResponseEntity<ResponseStructure<Cart>>(structure, HttpStatus.OK);
+		}
+		throw new CartNotFoundException("Cart with the Given Id Not Found");
+	}
+
+	public ResponseEntity<ResponseStructure<String>> delete(int cartId) {
+		if (cartDao.isPresent(cartId)) {
+			cartDao.delete(cartId);
+			ResponseStructure<String> structure = new ResponseStructure<>();
+			structure.setMessage("Cart DELETED !!!");
+			return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NO_CONTENT);
+		}
+		throw new CartNotFoundException("Cart with the Given Id Not Found");
+	}
 }
