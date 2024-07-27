@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.jsp.shoperstack.entity.Cart;
@@ -18,9 +19,9 @@ public class CartController {
 	private CartService service;
 
 	@PostMapping("/save")
-	public ResponseEntity<ResponseStructure<Cart>> 
-	saveCart(@RequestBody Cart cart) {
-		return service.saveCart(cart);
+	public ResponseEntity<ResponseStructure<Cart>> saveCart(@RequestBody Cart cart,
+			@RequestParam(required = false, name = "productId") int productId) {
+		return service.saveCart(cart, productId);
 	}
 
 }

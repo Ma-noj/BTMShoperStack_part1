@@ -1,6 +1,8 @@
 package com.edu.jsp.shoperstack.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.edu.jsp.shoperstack.dao.CartDao;
+import com.edu.jsp.shoperstack.dao.ProductDao;
 import com.edu.jsp.shoperstack.entity.Cart;
 import com.edu.jsp.shoperstack.entity.Product;
 import com.edu.jsp.shoperstack.util.ResponseStructure;
@@ -16,9 +19,26 @@ import com.edu.jsp.shoperstack.util.ResponseStructure;
 public class CartService {
 	@Autowired
 	private CartDao cartDao;
+	@Autowired
+	private ProductDao productDao;
 
-	public ResponseEntity<ResponseStructure<Cart>> saveCart(Cart cart) {
+	public ResponseEntity<ResponseStructure<Cart>> saveCart(Cart cart, int productId) {
+		
+		Optional<Product> optional = productDao.findById(productId);
+		if (optional.isPresent()) {
+			
+			List<Product> listOfProducts = cart.getProducts();
 
+			if (listOfProducts == null) {
+				listOfProducts = new ArrayList<Product>();
+			}
+
+			listOfProducts.add(optional.get());
+			
+			cart.setProducts(listOfProducts);
+
+		}
+		
 		cart = calculatePriceOfCart(cart);
 		Cart savedCart = cartDao.saveCart(cart);
 
