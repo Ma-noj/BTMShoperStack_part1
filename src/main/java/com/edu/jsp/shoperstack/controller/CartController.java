@@ -1,10 +1,15 @@
 package com.edu.jsp.shoperstack.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.jsp.shoperstack.entity.Cart;
@@ -18,9 +23,22 @@ public class CartController {
 	private CartService service;
 
 	@PostMapping("/save")
-	public ResponseEntity<ResponseStructure<Cart>> 
-	saveCart(@RequestBody Cart cart) {
+	public ResponseEntity<ResponseStructure<Cart>> saveCart(@RequestBody Cart cart) {
 		return service.saveCart(cart);
 	}
 
+	@GetMapping("/findAll")
+	public ResponseEntity<ResponseStructure<List<Cart>>> findAll() {
+		return service.findAll();
+	}
+
+	@GetMapping("/findById")
+	public ResponseEntity<ResponseStructure<Cart>> findById(@RequestParam int cartId) {
+		return service.findById(cartId);
+	}
+
+	@DeleteMapping("/delete")
+	public ResponseEntity<ResponseStructure<String>> delete(int cartId) {
+		return service.delete(cartId);
+	}
 }

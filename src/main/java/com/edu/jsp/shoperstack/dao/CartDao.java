@@ -14,4 +14,6 @@ public interface CartDao {
 	Optional<Cart> findById(int cartId);
 
 	void delete(int cartId);
+
+	boolean isPresent(int cartId);
 }
