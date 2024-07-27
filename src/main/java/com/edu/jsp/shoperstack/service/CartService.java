@@ -14,6 +14,7 @@ import com.edu.jsp.shoperstack.dao.ProductDao;
 import com.edu.jsp.shoperstack.entity.Cart;
 import com.edu.jsp.shoperstack.entity.Product;
 import com.edu.jsp.shoperstack.exception.CartNotFoundException;
+import com.edu.jsp.shoperstack.exception.ProductNotFoundException;
 import com.edu.jsp.shoperstack.util.ResponseStructure;
 
 @Service
@@ -24,10 +25,10 @@ public class CartService {
 	private ProductDao productDao;
 
 	public ResponseEntity<ResponseStructure<Cart>> saveCart(Cart cart, int productId) {
-		
+
 		Optional<Product> optional = productDao.findById(productId);
 		if (optional.isPresent()) {
-			
+
 			List<Product> listOfProducts = cart.getProducts();
 
 			if (listOfProducts == null) {
@@ -35,11 +36,11 @@ public class CartService {
 			}
 
 			listOfProducts.add(optional.get());
-			
+
 			cart.setProducts(listOfProducts);
 
 		}
-		
+
 		cart = calculatePriceOfCart(cart);
 		Cart savedCart = cartDao.saveCart(cart);
 
@@ -94,6 +95,39 @@ public class CartService {
 			structure.setMessage("Cart DELETED !!!");
 			return new ResponseEntity<ResponseStructure<String>>(structure, HttpStatus.NO_CONTENT);
 		}
+		throw new CartNotFoundException("Cart with the Given Id Not Found");
+	}
+
+	public ResponseEntity<ResponseStructure<Cart>> addProduct(int cartId, List<Integer> productIds) {
+		Optional<Cart> optional = cartDao.findById(cartId);
+
+		if (optional.isPresent()) {
+			Cart cart = optional.get();
+
+			if (cart.getProducts() == null) {
+				cart.setProducts(new ArrayList<Product>());
+			}
+
+			for (Integer productId : productIds) {
+				Optional<Product> optionalProduct = productDao.findById(productId);
+				if (optionalProduct.isPresent()) {
+					cart.getProducts().add(optionalProduct.get());
+				} else {
+					throw new ProductNotFoundException("Prodcut With the Given Id = " + productId + " is Not Present");
+				}
+			}
+
+			cart = calculatePriceOfCart(cart);
+			
+			Cart modifiedCart = cartDao.saveCart(cart);
+
+			ResponseStructure<Cart> structure = new ResponseStructure<>();
+			structure.setMessage("Modified");
+			structure.setData(modifiedCart);
+			return new ResponseEntity<ResponseStructure<Cart>>(structure, HttpStatus.OK);
+
+		}
+
 		throw new CartNotFoundException("Cart with the Given Id Not Found");
 	}
 }

@@ -42,4 +42,10 @@ public class CartController {
 	public ResponseEntity<ResponseStructure<String>> delete(int cartId) {
 		return service.delete(cartId);
 	}
+
+	@PostMapping("/addProduct")
+	public ResponseEntity<ResponseStructure<Cart>> addProduct(@RequestParam int cartId,
+			@RequestBody List<Integer> productIds) {
+		return service.addProduct(cartId, productIds);
+	}
 }
